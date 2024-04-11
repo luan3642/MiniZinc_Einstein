@@ -15,14 +15,28 @@ array[1..5] of var Pets: pet;
 array[1..5] of var Hobbies: hobby;
 
 %definindo dicas que já sabemos
-%clue 
+%clue 8
 constraint nationality[1] = Norwegian;
+%clue 11
 constraint drink[3] = Milk;
+
+
 
 
 
 %define a dica 1 onde o britanico mora na casa vermelha
 constraint forall(i in 1..5) ((nationality[i] = British) <-> (color[i] = Red));
+%clue 3
+constraint forall(i in 1..5) ((nationality[i] = Danish) <-> (drink[i] = Tea));
+
+
+%usando a constraint alldiferent para que ninguem tenha caracteristicas repetitivas...
+
+constraint alldiferent(nationality);
+constraint alldiferent(color);
+constraint alldiferent(drink);
+constraint alldiferent(pet);
+constraint alldiferent(hobby);
 
 
 
