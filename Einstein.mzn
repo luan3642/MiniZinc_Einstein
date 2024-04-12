@@ -7,7 +7,7 @@ enum Nationalities = {Norwegian, Danish, British, German, Swedish};
 enum Colors = {Red, Green, White, Yellow, Blue};
 enum Drinks = {Tea, Coffee, Milk, Beer, Water};
 enum Pets = {Cats, Horse, Birds, Dogs, Fish};
-enum Hobbies = {Piano, Basket, Soccer, Violin};
+enum Hobbies = {Piano, Basket, Soccer, Violin, Baseball};
 
 
 %defines array for each house
@@ -38,23 +38,35 @@ constraint forall(i in 1..5) ((nationality[i] = German) <-> (hobby[i] = Soccer))
 %clue 5
 constraint forall(i in 1..5) ((color[i] = Green) <-> (drink[i] = Coffee));
 %clue 6
-constraint forall(i in 1..5) ((hobby[i] = Basket) <-> (pet[i] = Birds)); 
+constraint forall(i in 1..5) ((hobby[i] = Baseball) <-> (pet[i] = Birds)); 
 %clue 7
-constraint forall(i in 2..5) ((hobby[i] = Basket) -> (pet[i-1] = Cats)) \/ ((i<5) /\ (hobby[i] = Basket) -> (pet[i+1] = Cats));
+constraint forall(i in 1..5) (
+    (i > 1 /\ hobby[i] = Basket -> pet[i-1] = Cats) \/
+    (i < 5 /\ hobby[i] = Basket -> pet[i+1] = Cats)
+);
+
+
 %clue 9
 constraint forall(i in 1..5) ((hobby[i] = Violin) <-> (drink[i] = Beer));
 %clue 10
 constraint forall(i in 1..5) ((color[i] = Yellow) <-> (hobby[i] = Piano));
 %Clue 12
-constraint forall(i in 2..5) ((pet[i] = Horse) -> (hobby[i-1] = Piano)) \/ ((i<5) /\ (pet[i] = Horse) -> (hobby[i+1] = Piano));
-%clue 13
-constraint forall(i in 1..4) ((nationality[i] = German) -> (color[i+1] = White));
-%clue 14
-constraint forall
+constraint forall(i in 1..5) (
+    (i > 1 /\ pet[i] = Horse -> hobby[i-1] = Piano) \/
+    (i < 5 /\ pet[i] = Horse -> hobby[i+1] = Piano)
+);
+
+%clue 13 
+constraint forall(i in 1..5) ((nationality[i] = German) <-> (color[i] = Green));
+
+%clue 15
+constraint forall(i in 1..5) (
+    (i > 1 /\ hobby[i] = Basket -> drink[i-1] = Water) \/
+    (i < 5 /\ hobby[i] = Basket -> drink[i+1] = Water)
+);
 
 
 %using the alldifferent constraint so that no one has repetitive characteristics...
-
 constraint alldifferent(nationality);
 constraint alldifferent(color);
 constraint alldifferent(drink);
@@ -62,5 +74,7 @@ constraint alldifferent(pet);
 constraint alldifferent(hobby);
 
 
+output [ if fix(pet[i]) = Fish then "The owner of the fish is " ++ show(nationality[i]) else "" endif | i in 1..5 ];
 
 
+solve satisfy;
