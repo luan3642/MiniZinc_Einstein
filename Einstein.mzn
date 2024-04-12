@@ -22,6 +22,8 @@ array[1..5] of var Hobbies: hobby;
 constraint nationality[1] = Norwegian;
 %clue 11
 constraint drink[3] = Milk;
+%clue 14
+constraint color[2] = Blue;
 
 
 
@@ -44,10 +46,11 @@ constraint forall(i in 1..5) ((hobby[i] = Violin) <-> (drink[i] = Beer));
 %clue 10
 constraint forall(i in 1..5) ((color[i] = Yellow) <-> (hobby[i] = Piano));
 %Clue 12
-constraint forall(i in 2..5) ((pet[i] = Horse) -> (hobby[i-1] = Piano)) \/ ((i<5) /\ (pet[i] = Horse) -> (hobby[i+1) = Piano));
+constraint forall(i in 2..5) ((pet[i] = Horse) -> (hobby[i-1] = Piano)) \/ ((i<5) /\ (pet[i] = Horse) -> (hobby[i+1] = Piano));
 %clue 13
-constraint forall(i in 1..4) ((nationality[i] German) -> (color[i+1] = White));
-
+constraint forall(i in 1..4) ((nationality[i] = German) -> (color[i+1] = White));
+%clue 14
+constraint forall
 
 
 %using the alldifferent constraint so that no one has repetitive characteristics...
